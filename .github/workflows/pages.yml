@@ -25,7 +25,7 @@ jobs:
       - name: Install & Build
         working-directory: frontend
         run: |
-          npm ci
+          npm install
           npm run build
           # Prevent Jekyll processing on Pages
           touch dist/.nojekyll
