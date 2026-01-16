@@ -23,11 +23,34 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build
+      # ▶ If you couldn't commit frontend/index.html, generate it here.
+      - name: Create index.html
+        working-directory: frontend
+        run: |
+          if [ ! -f index.html ]; then
+            cat > index.html << 'EOF'
+            <!doctype html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>AI Task Automation Dashboard</title>
+              </head>
+              <body>
+                <div id="root"></div>
+                /src/main.jsx</script>
+              </body>
+            </html>
+            EOF
+          fi
+
+      - name: Install & Build
         working-directory: frontend
         run: |
           npm ci
           npm run build
+          # Add .nojekyll so GH Pages doesn't process with Jekyll
+          touch dist/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
